@@ -399,6 +399,15 @@ fn main() -> ! {
                 } else {
                     // Animation is over. Clear screen
                     state.grid = Grid::default();
+
+                    match state.game {
+                        Some(GameState::Tetris(_)) => {
+                            // after tetris plays the losing animation make sure to render the game again
+                            tetris::game_step(&mut state, 0);
+                        }
+                        None => {}
+                        _ => {}
+                    }
                 }
             }
 
