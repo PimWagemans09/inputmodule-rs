@@ -144,7 +144,7 @@ use core::fmt::Write;
 use heapless::String;
 
 use fl16_inputmodules::control::*;
-use fl16_inputmodules::games::{pong, snake};
+use fl16_inputmodules::games::{pong, snake, tetris};
 use fl16_inputmodules::matrix::*;
 use fl16_inputmodules::patterns::*;
 use fl16_inputmodules::serialnum::{device_release, get_serialnum};
@@ -541,6 +541,10 @@ fn main() -> ! {
                 Some(GameState::Pong(_)) => {
                     let _ = serial.write(b"Pong Game step\r\n");
                     pong::game_step(&mut state, random);
+                }
+                Some(GameState::Tetris(_)) => {
+                    let _ = serial.write(b"Tetris Game step\r\n");
+                    tetris::game_step(&mut state, random);
                 }
                 Some(GameState::Snake(_)) => {
                     let _ = serial.write(b"Snake Game step\r\n");
