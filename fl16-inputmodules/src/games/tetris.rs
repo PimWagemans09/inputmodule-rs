@@ -315,14 +315,16 @@ impl TetrisState {
         let mut grid: Grid = Grid::default();
         for x in 0..WIDTH {
             for y in 0..HEIGHT {
-                grid.0[x][y] = (self.placed_tetrominos[x][y]) * 0xFF;
+                // [8 - x] because the rest of the firmware expects (0,0) to be the top-right corner
+                // but I programmed the game assuming (0,0) is the top-left corner
+                grid.0[8-x][y] = (self.placed_tetrominos[x][y]) * 0xFF;
             }
         }
         let tetronimo = get_tetromino(self.current_tetromino, self.rotation);
         for i in 0..4 {
             let x = self.position.0 + tetronimo[i].0;
             let y = self.position.1 + tetronimo[i].1;
-            grid.0[x as usize][y as usize] = 0xff;
+            grid.0[8-x as usize][y as usize] = 0xff;
         }
         grid
     }
@@ -342,7 +344,7 @@ impl TetrisState {
                     }
                 }
                 if can_move {
-                    self.position.0 += 1;
+                    self.position.0 -= 1;
                     self.moved_this_tick = true;
                 }
             }
@@ -358,7 +360,7 @@ impl TetrisState {
                     }
                 }
                 if can_move {
-                    self.position.0 -= 1;
+                    self.position.0 += 1;
                     self.moved_this_tick = true;
                 }
             },
